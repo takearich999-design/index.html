@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KLLC Mobile Checklist</title>
+    <title>KLLC Mobile Audit - Production</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,7 +19,7 @@
                 </div>
                 <div>
                     <h1 class="text-xs font-bold text-white leading-tight">KLLC Mobile Audit</h1>
-                    <p class="text-[10px] text-slate-400">ระบบตรวจเช็กครุภัณฑ์มือถือ</p>
+                    <p class="text-[10px] text-slate-400">ระบบตรวจเช็กครุภัณฑ์ตัวจริง</p>
                 </div>
             </div>
             <div class="flex items-center gap-2 text-[11px]">
@@ -128,9 +128,19 @@
 
     <script>
         let currentIssueBase64 = "";
-        let checklistData = JSON.parse(localStorage.getItem('kllc_checklist_full_v3')) || [
-            {"id": 1, "sheet": "ห้อง100ที่นั่ง", "code": "57สห990000451116000-05(2)", "name": "เครื่องมิกเซอร์ YAMAHA", "qty": "1", "storage": "ห้อง100ที่นั่ง", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้อง100ที่นั่ง"}
+        
+        // Master Dataset Ready for Production Deployment
+        const masterDataset = [
+            {"id": 1, "sheet": "ห้อง100ที่นั่ง", "code": "57สห990000451116000-05(2)", "name": "เครื่องมิกเซอร์ YAMAHA", "qty": "1", "storage": "ห้อง100ที่นั่ง", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้อง100ที่นั่ง"},
+            {"id": 2, "sheet": "ห้อง100ที่นั่ง", "code": "57สห990000451116000-06", "name": "ไมโครโฟนไร้สาย SHURE", "qty": "2", "storage": "ห้อง100ที่นั่ง", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้อง100ที่นั่ง"},
+            {"id": 3, "sheet": "ห้อง100ที่นั่ง", "code": "57สห990000451116000-07", "name": "เครื่องขยายเสียง POWER AMP", "qty": "1", "storage": "ห้อง100ที่นั่ง", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้อง100ที่นั่ง"},
+            {"id": 4, "sheet": "ห้องประชุมใหญ่", "code": "60สห990000451116001-01", "name": "โปรเจกเตอร์ EPSON 5000 Lumens", "qty": "1", "storage": "ห้องประชุมใหญ่", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้องประชุมใหญ่"},
+            {"id": 5, "sheet": "ห้องประชุมใหญ่", "code": "60สห990000451116001-02", "name": "จอรับภาพแบบไฟฟ้า 150 นิ้ว", "qty": "1", "storage": "ห้องประชุมใหญ่", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "ห้องประชุมใหญ่"},
+            {"id": 6, "sheet": "โซน CCTV ชั้น 1", "code": "CTV-L1-01", "name": "กล้อง CCTV Hikvision DOME", "qty": "1", "storage": "โซน CCTV ชั้น 1", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "โซน CCTV ชั้น 1"},
+            {"id": 7, "sheet": "โซน CCTV ชั้น 1", "code": "CTV-L1-02", "name": "กล้อง CCTV Hikvision BULLET", "qty": "1", "storage": "โซน CCTV ชั้น 1", "status": "พร้อมใช้งาน", "image": "", "remark": "-", "defect_reason": "", "current_location": "โซน CCTV ชั้น 1"}
         ];
+
+        let checklistData = JSON.parse(localStorage.getItem('kllc_checklist_prod_v1')) || masterDataset;
 
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
@@ -160,7 +170,7 @@
         });
 
         function saveStorage() {
-            localStorage.setItem('kllc_checklist_full_v3', JSON.stringify(checklistData));
+            localStorage.setItem('kllc_checklist_prod_v1', JSON.stringify(checklistData));
         }
 
         function initLocationFilter() {
@@ -433,7 +443,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
             const dlAnchor = document.createElement('a');
             dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", `kllc_mobile_report_${date}.json`);
+            dlAnchor.setAttribute("download", `kllc_production_report_${date}.json`);
             document.body.appendChild(dlAnchor);
             dlAnchor.click();
             dlAnchor.remove();
